@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title></title>
+    <meta charset="utf-8">
+    <style type="text/css">
+    #canvas {
+        
+    }
+    </style>
+</head>
+
+<body>
+    <canvas id="canvas"></canvas>
+    <script type="text/javascript" src="../lib/jquery-1.11.3.min.js"></script>
+    <script type="text/javascript" src="./lucky_wheel.js">
+    </script>
+    <script type="text/javascript">
+    function resizeCanvas() {
+        var width = $(window).get(0).innerWidth;
+        var height = $(window).get(0).innerHeight;
+        $("#canvas").attr("width", width);
+        $("#canvas").attr("height", height);
+    }
+    resizeCanvas();
+    var width = $('#canvas').width();
+    var height = $('#canvas').height();
+    $('#canvas').lucky_wheel({
+        x: width / 2,
+        y: height / 2
+    }, 200,[{
+    	text:'特等奖',
+    	img:'./tedeng.png'
+    },{
+    	text:'一等奖',
+    	img:''
+    },{
+    	text:'二等奖',
+    	img:''
+    },{
+    	text:'三等奖',
+    	img:''
+    },{
+    	text:'四等奖',
+    	img:''
+    }])
+    </script>
+</body>
+
+</html>
