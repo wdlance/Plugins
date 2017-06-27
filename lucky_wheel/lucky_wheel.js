@@ -122,19 +122,23 @@
         },
         bindEvent: function() {
             var self = this;
+            var interval=""
             window.onclick = function(e) {
-                var x = e.pageX;
+                if(interval!=""){
+                    clearInterval(interval)
+                    interval=""
+                }else{
+                    var x = e.pageX;
                 var y = e.pageY;
                 var left = self.location.x - self.radius;
                 var right = self.location.x + self.radius;
                 var top = self.location.y - self.radius;
                 var bottom = self.location.y + self.radius;
-                var interval = ""
                 var num = 360;
                 if (x >= left && x < right && y < bottom && y > top) {
                     var i = 0;
                     var flag = true;
-                    interval = setInterval(function() {
+                    interval= setInterval(function() {
                         if (num <= 0) {
                             clearInterval(interval)
                         } else {
@@ -160,6 +164,8 @@
                         }
                     }, 1)
                 }
+                }
+              
             }
         }
     }
