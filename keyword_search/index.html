@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title></title>
+    <meta charset="utf-8">
+    <link href="../lib/bootstrap-3.3.5/bootstrap.min.css" rel="stylesheet">
+    <style type="text/css">
+    .container {
+        padding: 15px;
+    }
+    .group {
+        text-align: center;
+        height: 40px;
+    }
+    input[type='search'] {
+        width: 80%;
+        height: 100%;
+        border: 1px solid #dcdcdc;
+        padding: 0 15px;
+    }
+    button {
+        width: 10%;
+        height: 100%;
+    }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="group" id="searchGroup">
+            <input type="search" name="search" placeholder="">
+        </div>
+    </div>
+    <script type="text/javascript" src="../lib/jquery-1.11.3.min.js"></script>
+    <script type="text/javascript" src="./index.js"></script>
+    <script type="text/javascript">
+    var words=['水果','蔬菜','家具','家电','日用','清洁','爽肤水','矿泉水','纯净水','啫喱水']
+    	$('#searchGroup').search('请输入搜索内容',words)
+    </script>
+</body>
+</html>
