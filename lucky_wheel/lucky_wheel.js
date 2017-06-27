@@ -17,10 +17,8 @@
             ctx.rotate((i * 10) * Math.PI / 180);
             ctx.clearRect(-self.radius, -this.radius, 2 * this.radius, 2 * this.radius)
             self.draw();
-            self.drawImage(function(){
-                ctx.restore();
-            });
             self.drawText();
+          ctx.restore();
             self.drawArrow();
             self.bindEvent();
         },
@@ -48,7 +46,7 @@
                 ctx.lineTo(location.x + r * Math.sin(i * angle * Math.PI / 180), location.y - r * Math.cos(i * angle * Math.PI / 180));*/
                 ctx.moveTo(0, 0);
                 ctx.lineTo(r * Math.sin(i * angle * Math.PI / 180), -r * Math.cos(i * angle * Math.PI / 180));
-            ctx.stroke();
+                ctx.stroke();
             }
 
         },
@@ -61,18 +59,18 @@
             ctx.fillStyle = "#000"
             ctx.lineWidth = '3'
             ctx.strokeStyle = "#000"
-            ctx.moveTo(0, 0);
-            ctx.lineTo( r * Math.sin(angle / 2), - r * Math.cos(angle / 2));
+            ctx.moveTo(location.x,location.y);
+            ctx.lineTo(location.x+r * Math.sin(angle / 2), location.y-r * Math.cos(angle / 2));
             /*ctx.moveTo(0,0);
             ctx.lineTo(r*Math.sin(angle/2),-r*Math.cos(angle/2));*/
             ctx.stroke();
             ctx.beginPath();
-            ctx.arc( r * Math.sin(angle / 2),  - r * Math.cos(angle / 2), 10, 0, 2 * Math.PI, false)
+            ctx.arc(location.x+r * Math.sin(angle / 2), location.y-r * Math.cos(angle / 2), 10, 0, 2 * Math.PI, false)
                 //ctx.arc(r*Math.sin(angle/2),  -r*Math.cos(angle/2), 10, 0, 2 * Math.PI, false)
             ctx.fill();
             ctx.beginPath();
             ctx.fillStyle = "#ccc";
-            ctx.arc(0, 0, 10, 0, 2 * Math.PI, false);
+            ctx.arc(location.x, location.y, 10, 0, 2 * Math.PI, false);
             //ctx.arc(0,0, 10, 0, 2 * Math.PI, false);
             ctx.fill();
         },
@@ -96,14 +94,14 @@
                 ctx.restore();
             }
         },
-        drawImage: function(callback) {
+        drawImage: function() {
             var ctx = this.ctx;
             var location = this.location;
             var r = this.radius - 50;
             var angle = 360 / this.info.length;
-            var self=this;
+            var self = this;
             for (var i = 0; i < this.info.length; i++) {
-                (function(index,r,angle) {
+                (function(index, r, angle) {
                     var img = new Image();
                     var x = r * Math.sin(index * angle * Math.PI / 180);
                     var y = -r * Math.cos(index * angle * Math.PI / 180)
@@ -111,12 +109,11 @@
                         ctx.save();
                         ctx.translate(x, y)
                         ctx.rotate((angle / 2 + index * angle) * Math.PI / 180)
-                        ctx.drawImage(img,r/2,0,50,50)
+                        ctx.drawImage(img, r / 2, 0, 50, 50)
                         ctx.restore();
-                        callback();
                     }
                     img.src = self.info[index].img
-                })(i,r,angle)
+                })(i, r, angle)
             }
         },
         bindEvent: function() {
@@ -129,7 +126,7 @@
                 var top = self.location.y - self.radius;
                 var bottom = self.location.y + self.radius;
                 var interval = ""
-                var num = 360 ;
+                var num = 360;
                 if (x >= left && x < right && y < bottom && y > top) {
                     var i = 0;
                     interval = setInterval(function() {
@@ -139,16 +136,17 @@
                             var ctx = self.ctx;
                             var location = self.location;
                             ctx.save();
-                            num --;
+                            num--;
                             ctx.translate(location.x, location.y);
-                            ctx.rotate(num*10);
+                            ctx.rotate(num * 10);
                             ctx.rotate(Math.random() * 360 * Math.PI / 180);
                             ctx.clearRect(-self.radius, -this.radius, 2 * this.radius, 2 * this.radius)
                             self.draw();
-                            self.drawImage(function(){
-                                 ctx.restore();
-                            });
+                            self.drawImage();
                             self.drawText();
+                           
+                            
+                            ctx.restore();
                             self.drawArrow();
                             i++;
                         }
