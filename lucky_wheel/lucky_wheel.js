@@ -17,9 +17,12 @@
             ctx.rotate((i * 10) * Math.PI / 180);
             ctx.clearRect(-self.radius, -this.radius, 2 * this.radius, 2 * this.radius)
             self.draw();
-            self.drawText();
-          ctx.restore();
-            self.drawArrow();
+            self.drawImage(function() {
+                self.drawText();
+                ctx.restore();
+                self.drawArrow();
+            })
+
             self.bindEvent();
         },
         draw: function() {
@@ -59,13 +62,13 @@
             ctx.fillStyle = "#000"
             ctx.lineWidth = '3'
             ctx.strokeStyle = "#000"
-            ctx.moveTo(location.x,location.y);
-            ctx.lineTo(location.x+r * Math.sin(angle / 2), location.y-r * Math.cos(angle / 2));
+            ctx.moveTo(location.x, location.y);
+            ctx.lineTo(location.x + r * Math.sin(angle / 2), location.y - r * Math.cos(angle / 2));
             /*ctx.moveTo(0,0);
             ctx.lineTo(r*Math.sin(angle/2),-r*Math.cos(angle/2));*/
             ctx.stroke();
             ctx.beginPath();
-            ctx.arc(location.x+r * Math.sin(angle / 2), location.y-r * Math.cos(angle / 2), 10, 0, 2 * Math.PI, false)
+            ctx.arc(location.x + r * Math.sin(angle / 2), location.y - r * Math.cos(angle / 2), 10, 0, 2 * Math.PI, false)
                 //ctx.arc(r*Math.sin(angle/2),  -r*Math.cos(angle/2), 10, 0, 2 * Math.PI, false)
             ctx.fill();
             ctx.beginPath();
@@ -94,7 +97,7 @@
                 ctx.restore();
             }
         },
-        drawImage: function() {
+        drawImage: function(callback) {
             var ctx = this.ctx;
             var location = this.location;
             var r = this.radius - 50;
@@ -111,6 +114,7 @@
                         ctx.rotate((angle / 2 + index * angle) * Math.PI / 180)
                         ctx.drawImage(img, r / 2, 0, 50, 50)
                         ctx.restore();
+                        callback();
                     }
                     img.src = self.info[index].img
                 })(i, r, angle)
@@ -129,26 +133,30 @@
                 var num = 360;
                 if (x >= left && x < right && y < bottom && y > top) {
                     var i = 0;
+                    var flag = true;
                     interval = setInterval(function() {
                         if (num <= 0) {
                             clearInterval(interval)
                         } else {
-                            var ctx = self.ctx;
-                            var location = self.location;
-                            ctx.save();
-                            num--;
-                            ctx.translate(location.x, location.y);
-                            ctx.rotate(num * 10);
-                            ctx.rotate(Math.random() * 360 * Math.PI / 180);
-                            ctx.clearRect(-self.radius, -this.radius, 2 * this.radius, 2 * this.radius)
-                            self.draw();
-                            self.drawImage();
-                            self.drawText();
-                           
-                            
-                            ctx.restore();
-                            self.drawArrow();
-                            i++;
+                            if (flag) {
+                                flag=false;
+                                var ctx = self.ctx;
+                                var location = self.location;
+                                ctx.save();
+                                num--;
+                                ctx.translate(location.x, location.y);
+                                ctx.rotate(num * 10);
+                                ctx.rotate(Math.random() * 360 * Math.PI / 180);
+                                ctx.clearRect(-self.radius, -this.radius, 2 * this.radius, 2 * this.radius)
+                                self.draw();
+                                self.drawImage(function() {
+                                    self.drawText();
+                                    ctx.restore();
+                                    self.drawArrow();
+                                    i++;
+                                    flag=true;
+                                });
+                            }
                         }
                     }, 1)
                 }
